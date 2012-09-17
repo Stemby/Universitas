@@ -2,7 +2,7 @@ About Universitas
 =================
 Universitas is a simple program written in Python to manage one's university transcript.
 
-Copyright © 2009-2010, Carlo Stemberger
+Copyright © 2009-2012, Carlo Stemberger
 
 License
 -------
@@ -11,9 +11,11 @@ COPYING).
 
 Dependencies
 ------------
-You only need Python.
+You only need Python. On Debian/Ubuntu:
+
+    $ sudo aptitude install python3
 
 Run on GNU/Linux
 ----------------
-$ ./universitas.py
+    $ ./universitas.py
 

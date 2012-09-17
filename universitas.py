@@ -1,20 +1,22 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-# Created by Carlo Stemberger
-# Copyright (C) 2009 Carlo Stemberger
+#    Universitas
+#    Copyright (C) 2009-2012, Carlo Stemberger
 #
-#   This program is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#   (at your option) any later version.
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
 #
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
 #
-#   You should have received a copy of the GNU General Public License
-#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""A simple program to manage one's university transcript."""
 
 import pickle
 import datetime
@@ -22,26 +24,26 @@ import datetime
 
 def ReadExams():
     try:
-        f = open("exams.pck", "r")
-        ListOfExams = pickle.load(f)
+        f = open("exams.pck", "rb")
+        list_of_exams = pickle.load(f)
         f.close()
-        #print ListOfExams # only for debugging
+        #print(list_of_exams) # NOTE: only for debugging
         #tree = etree.parse("test.xml")
-        #print etree.tostring(tree)
-        return ListOfExams
+        #print(etree.tostring(tree))
+        return list_of_exams
     except:
         return 0
 
-def WriteExams(ListOfExams):
-    f = open("exams.pck", "w")
-    pickle.dump(ListOfExams, f)
+def WriteExams(list_of_exams):
+    f = open("exams.pck", "wb")
+    pickle.dump(list_of_exams, f)
     f.close()
 
 def PrintTranscript():
     Separator = "-"*78
-    print Separator
-    print "   %-45s %-9s %-12s %s" % ("Exam", "Credits", "Date", "Mark")
-    print Separator
+    print(Separator)
+    print("   %-45s %-9s %-12s %s" % ("Exam", "Credits", "Date", "Mark"))
+    print(Separator)
     ListOfExams = ReadExams()
     if ListOfExams:
         Number = 0
@@ -52,79 +54,80 @@ def PrintTranscript():
             Date = Exam[2].strftime("%d-%m-%Y")
             Mark = Exam[3]
             CumLaude = Exam[4]
-            print "%-2d %-45s %-9d %-12s %2d%2s" % (Number, Name, Credits, Date, Mark, CumLaude)
-    print Separator
-    print "Avarage: %2.1f" % WeightedMean(ListOfExams)
-    print Separator
-    print
+            print("%-2d %-45s %-9d %-12s %2d%2s" % (Number, Name, Credits, Date, Mark, CumLaude))
+    print(Separator)
+    print("Avarage: %2.1f" % WeightedMean(ListOfExams))
+    print(Separator)
+    print()
 
 def AddExam():
-    Name = raw_input("Name: ").decode("utf-8")
+    name = input("Name: ")
 
-    RawCredits = raw_input("Credits: ")
-    Credits = ElaborateCredits(RawCredits)
-    if Credits == 0:
-        print "Not valid value"
-        print
+    raw_credits = input("Credits: ")
+    credits = ElaborateCredits(raw_credits)
+    if credits == 0:
+        print("Not valid value")
+        print()
         return
 
-    RawDate = raw_input("Date (DDMMYYYY): ")
-    Date = ElaborateDate(RawDate)
-    if Date == 0:
-        print "Not valid date"
-        print
+    raw_date = input("Date (DDMMYYYY): ")
+    date = ElaborateDate(raw_date)
+    if date == 0:
+        print("Not valid date")
+        print()
         return
 
-    RawMark = raw_input("Mark: ")
-    Mark = ElaborateMark(RawMark)
-    if Mark == 0:
-        print "Not valid value"
-        print
+    raw_mark = input("Mark: ")
+    mark = ElaborateMark(raw_mark)
+    if mark == 0:
+        print("Not valid value")
+        print()
         return
 
-    CumLaude = Laude(Mark)
+    cum_laude = Laude(mark)
 
-    ListOfExams = []
+    list_of_exams = []
     if ReadExams():
-        ListOfExams[0:0] = ReadExams()
-    ListOfExams[len(ListOfExams):len(ListOfExams)] = [[Name, Credits, Date, Mark, CumLaude]]
-    WriteExams(ListOfExams)
-    print
+        list_of_exams[0:0] = ReadExams()
+    list_of_exams[len(list_of_exams):len(list_of_exams)] = [[name, credits, date, mark, cum_laude]]
+    #print(list_of_exams) # NOTE: DEBUGGING
+    WriteExams(list_of_exams)
+    print()
 
 def ModifyExam():
     ListOfExams = ReadExams()
     if ListOfExams:
-        RawExam = raw_input("Exam to modify: ")
+        RawExam = input("Exam to modify: ")
         try:
             Exam = int(RawExam)-1
         except:
-            print "Not valid value"
-            print
+            print("Not valid value")
+            print()
             return
         if Exam < len(ListOfExams):
-            ListOfExams[Exam][0] = raw_input("Name: ").decode("utf-8")
+            ListOfExams[Exam][0] = input("Name: ")
 
-            RawCredits = raw_input("Credits: ")
+            RawCredits = input("Credits: ")
             Credits = ElaborateCredits(RawCredits)
             if Credits == 0:
-                print "Not valid value"
-                print
+                print("Not valid value")
+                print()
                 return
             ListOfExams[Exam][1] = Credits
 
-            RawDate = raw_input("Date (DDMMYYYY): ")
+            RawDate = input("Date (DDMMYYYY): ")
             Date = ElaborateDate(RawDate)
             if Date == 0:
-                print "Not valid date"
-                print
+                print("Not valid date")
+                print()
                 return
             ListOfExams[Exam][2] = Date
 
-            RawMark = raw_input("Mark: ")
+            RawMark = input("Mark: ")
             Mark = ElaborateMark(RawMark)
             if Mark == 0:
-                print "Not valid value"
-                print
+                print("Not valid value")
+                print()
                 return
             ListOfExams[Exam][3] = Mark
 
@@ -132,46 +135,46 @@ def ModifyExam():
 
             WriteExams(ListOfExams)
         else:
-            print "Not valid value"
+            print("Not valid value")
     else:
-        print "No data to modify"
-    print
+        print("No data to modify")
+    print()
 
 def DelExam():
     ListOfExams = ReadExams()
     if ListOfExams:
-        RawExam = raw_input("Exam to cancel: ")
+        RawExam = input("Exam to cancel: ")
         try:
             Exam = int(RawExam)-1
         except:
-            print "Not valid value"
-            print
+            print("Not valid value")
+            print()
             return
         if Exam < len(ListOfExams):
             del ListOfExams[Exam]
             WriteExams(ListOfExams)
         else:
-            print "Not valid value"
+            print("Not valid value")
     else:
-        print "No data to cancel"
-    print
+        print("No data to cancel")
+    print()
 
 def MoveExam():
     ListOfExams = ReadExams()
     if ListOfExams:
-        RawExamPosition = raw_input("Exam to move: ")
+        RawExamPosition = input("Exam to move: ")
         try:
             ExamPosition = int(RawExamPosition)-1
         except:
-            print "Not valid value"
-            print
+            print("Not valid value")
+            print()
             return
-        RawNewPosition = raw_input("New position: ")
+        RawNewPosition = input("New position: ")
         try:
             NewPosition = int(RawNewPosition)-1
         except:
-            print "Not valid value"
-            print
+            print("Not valid value")
+            print()
             return
         if NewPosition == ExamPosition:
             return
@@ -184,17 +187,14 @@ def MoveExam():
                 del ListOfExams[ExamPosition]
             WriteExams(ListOfExams)
         else:
-            print "Not valid value"
+            print("Not valid value")
     else:
-        print "No data to move"
-    print
+        print("No data to move")
+    print()
 
 def TestNumbers(String):
-    def Digits(Character):
-        return '0' <= Character <= '9'
     for Char in String:
-        Test = Digits(Char)
-        if Test == 0:
+        if Char < '0' or Char > '9':
             return 0
     return 1
 
@@ -222,13 +222,13 @@ def ElaborateMark(RawMark):
         return 0
     return int(RawMark)
 
-def Laude(Mark):
-    CumLaude = ""
-    if Mark == 30:
-        Question = raw_input("Cum laude (y/n)? ")
-        if Question == "y":
-            CumLaude = "+l"
-    return CumLaude
+def Laude(mark):
+    cum_laude = ""
+    if mark == 30:
+        question = input("Cum laude (y/n)? ")
+        if question == "y":
+            cum_laude = "+l"
+    return cum_laude
 
 def WeightedMean(ListOfExams):
     if ListOfExams != 0:
@@ -244,7 +244,7 @@ def WeightedMean(ListOfExams):
 if __name__ == "__main__":
     Switch = 1
     while Switch:
-        Test = raw_input("""\
+        Test = input("""\
     1. Show transcript
     2. Add exam
     3. Modify exam
@@ -252,12 +252,12 @@ if __name__ == "__main__":
     5. Move exam
     6. Exit\n=> """)
         try:
-            exec {'1': 'PrintTranscript()',
+            exec({'1': 'PrintTranscript()',
                   '2': 'AddExam()',
                   '3': 'ModifyExam()',
                   '4': 'DelExam()',
                   '5': 'MoveExam()',
-                  '6': 'Switch = 0'}[Test]
+                  '6': 'Switch = 0'}[Test])
         except:
-            print "Not valid value"
-            print
+            print("Not valid value")
+            print()
