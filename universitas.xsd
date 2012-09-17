@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This XML Schema is released by the author into the public domain. -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="transcript">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="exam" type="examType" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="examType">
+    <xsd:sequence>
+      <xsd:element name="credits" type="xsd:positiveInteger" />
+      <xsd:element name="date" type="xsd:date" />
+      <xsd:element name="mark">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:positiveInteger">
+              <xsd:attribute name="cumLaude" type="xsd:boolean" default="0" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="title" type="xsd:string" />
+  </xsd:complexType>
+
+</xsd:schema>

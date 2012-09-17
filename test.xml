@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transcript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="universitas.xsd">
+  <exam title="Prova">
+    <credits>3</credits>
+    <date>2008-06-27</date>
+    <mark cumLaude="1">30</mark>
+  </exam>
+  <exam title="Pippo">
+    <credits>6</credits>
+    <date>2008-09-09</date>
+    <mark>23</mark>
+  </exam>
+</transcript>
