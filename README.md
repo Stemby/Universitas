@@ -1,6 +1,7 @@
 About Universitas
 =================
 Universitas is a simple program written in Python to manage one's university transcript.
+
 Copyright © 2009-2010, Carlo Stemberger
 
 LICENCE
